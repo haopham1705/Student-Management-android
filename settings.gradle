@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='RoomDb_2table_RxJava_Mvvm'
