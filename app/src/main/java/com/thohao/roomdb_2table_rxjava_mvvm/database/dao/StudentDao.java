@@ -29,7 +29,7 @@ public interface StudentDao {
 //delete students by class
     @Query("DELETE FROM student_table WHERE class_id==:class_id")
     void deleteAllStudentsUnderClass(int class_id);
-//get students list under specific class
+
     @Query("SELECT * FROM student_table WHERE class_id LIKE :class_id")
     Flowable<List<Students>> getAllStudentsByClass(int class_id);
 }

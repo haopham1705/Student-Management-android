@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
 import com.thohao.roomdb_2table_rxjava_mvvm.adapter.ClassAdapter;
@@ -106,7 +108,7 @@ public class ClassActivity extends AppCompatActivity implements
 
     public void openDialogClassAdd() {
         DialogClassAdd dialogClassAdd = new DialogClassAdd();
-        dialogClassAdd.show(getSupportFragmentManager(), "creat dialog");
+        dialogClassAdd.show(getSupportFragmentManager(), "create dialog");
 
     }
 
@@ -125,18 +127,37 @@ public class ClassActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_delete) {
-            deleteClassAndStudent();
+        //Delete All
+        if (id == R.id.action_delete_all) {
+            new MaterialAlertDialogBuilder(ClassActivity.this,R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
+                    .setMessage("Do you want delete all ?")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteClassAndStudent();
+                            Toast.makeText(ClassActivity.this,"Successfull",Toast.LENGTH_SHORT).show();
+
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Toast.makeText(ClassActivity.this,"You choice no",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).create().show();
             return true;
 
-        } else if (id == R.id.action_search) {
+        }
+        //search
+        else if (id == R.id.action_search) {
             Toast.makeText(ClassActivity.this,"Searching..."+TAG,Toast.LENGTH_SHORT).show();
             return true;
         }

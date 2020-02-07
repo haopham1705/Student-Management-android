@@ -1,6 +1,5 @@
 package com.thohao.roomdb_2table_rxjava_mvvm.view;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +22,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
-import com.thohao.roomdb_2table_rxjava_mvvm.model.Classes;
+import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 import com.thohao.roomdb_2table_rxjava_mvvm.utils.DataConverter;
-import com.vanniktech.rxpermission.RealRxPermission;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,16 +32,23 @@ import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
-public class DialogClassAdd extends AppCompatDialogFragment {
-
-    private EditText mTxtClassName;
-    private ImageView mImageView;
-    private Button mBtnSave;
-    private MaterialCardView mImageSelectButton;
+public class DialogStudentUpdate extends AppCompatDialogFragment {
+    private EditText mName;
+    private EditText mAge;
+    private EditText mAddress;
+    private ImageView mImageview;
     private Bitmap mBitmap;
-    private CreateClassListener mListener;
+    private Button mButtonSave;
+    private MaterialCardView mImageSelectBtn;
+    private DialogStudentUpdate.UpdateStudentLayer mListener;
+    private static final String TAG = "ccc_dialogstudentupdate";
 
-    private static final String TAG = "ccc_dialogclassadd";
+    private Students students;
+
+    public void setStudents(Students students) {
+        this.students = students;
+
+    }
 
     @NonNull
     @Override
@@ -51,44 +56,47 @@ public class DialogClassAdd extends AppCompatDialogFragment {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_class_layout, null);
+        View view = inflater.inflate(R.layout.dialog_student_layout, null);
 
         builder.setView(view);
         builder.setCancelable(true);
         builder.setTitle(null);
 
-        mTxtClassName = view.findViewById(R.id.edittext_className);
-        mImageSelectButton = view.findViewById(R.id.select_image);
-        mImageView = view.findViewById(R.id.image_view);
-        mBtnSave = view.findViewById(R.id.btn_save);
+        mName = view.findViewById(R.id.editext_name);
+        mAge = view.findViewById(R.id.edittext_age);
+        mAddress = view.findViewById(R.id.edittext_address);
+        mImageview = view.findViewById(R.id.image_view);
+        mImageSelectBtn = view.findViewById(R.id.select_image);
+        mButtonSave = view.findViewById(R.id.btn_save);
+        mName.setText(students.getName());
+        mAge.setText(students.getAge());
+        mAddress.setText(students.getAddress());
+        //get image
+        mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
 
-        mImageSelectButton.setOnClickListener(new View.OnClickListener() {
+        mImageSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check permission
-                RealRxPermission.getInstance(getActivity())
-                        .request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        .subscribe();
-
-                //go to gallery
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
             }
         });
-        mBtnSave.setOnClickListener(new View.OnClickListener() {
+        mButtonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String class_name = mTxtClassName.getText().toString();
-                if (!class_name.isEmpty() && mBitmap != null) {
-                    Classes classes = new Classes(class_name, DataConverter.convertImageToByteArray(mBitmap));
-                    mListener.saveNameClass(classes);
+                String name = mName.getText().toString();
+                String age = mAge.getText().toString();
+                String address = mAddress.getText().toString();
+
+                if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && mBitmap != null) {
+                    Students currentStudents = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
+                    currentStudents.setId(students.getId());
+                    mListener.updateNewStudents(currentStudents);
                     dismiss();
                 }
             }
         });
-
-
         return builder.create();
     }
 
@@ -101,31 +109,19 @@ public class DialogClassAdd extends AppCompatDialogFragment {
                 File imageFile = new File(getRealPathFromURI(selectedImage));
                 try {
                     mBitmap = new Compressor(getActivity()).compressToBitmap(imageFile);
-                    mImageView.setImageBitmap(mBitmap);
-                    Log.d(TAG, "OnActivityResult: ");
-
+                    mImageview.setImageBitmap(mBitmap);
+                    Log.d(TAG, "onActivityResult: ");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (CreateClassListener) context;
-    }
-
-    public interface CreateClassListener {
-        void saveNameClass(Classes classes);
     }
 
     private String getRealPathFromURI(Uri contentURI) {
-        String result ;
+        String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
+        if (cursor == null) { // Source is Dropbox or other similar local file path
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();
@@ -134,5 +130,15 @@ public class DialogClassAdd extends AppCompatDialogFragment {
             cursor.close();
         }
         return result;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (UpdateStudentLayer) context;
+    }
+
+    public interface UpdateStudentLayer {
+        void updateNewStudents(Students students);
     }
 }

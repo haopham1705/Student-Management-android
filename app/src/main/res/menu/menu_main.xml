@@ -4,18 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.ClassActivity">
     <item
-        android:id="@+id/action_delete"
-        android:orderInCategory="2"
-        android:title="Delete"
-        android:icon="@drawable/ic_delete"
-        android:iconTint="@color/colorAccent"
-        app:showAsAction="always"/>
+        android:id="@+id/action_delete_all"
+        android:orderInCategory="200"
+        android:title="Delete all"
+
+        app:showAsAction="never"/>
+    <!--android:iconTint="@color/colorAccent"-->
+    <!--android:icon="@drawable/ic_delete"-->
+
     <item
         android:id="@+id/action_search"
-        android:orderInCategory="1"
+        android:orderInCategory="100"
         android:title="Search"
         android:icon="@drawable/ic_search"
         android:iconTint="@color/colorAccent"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="300"
+        android:title="About"
+        app:showAsAction="never" />
 
 </menu>

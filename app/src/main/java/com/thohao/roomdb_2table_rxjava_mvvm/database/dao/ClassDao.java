@@ -27,10 +27,7 @@ public interface ClassDao {
     @Query("DELETE FROM class_table")
     void deleteAllClass();
 
-    //delete students by class
     @Query("SELECT * FROM class_table")
     Flowable<List<Classes>> getAllClass();
-    //get movie list under specific class
-    //WHERE class_id==:class_id int class_id
 
 }

@@ -108,7 +108,6 @@ public class ClassRepository {
                     }
                 });
     }
-
     //delete class
     public void deleteClass(final Classes classes) {
         isLoading.setValue(true);
@@ -124,26 +123,19 @@ public class ClassRepository {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe : called");
-
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onSubscribe : called");
                         //deleteAllStudents(classes.getId());
                         isLoading.setValue(false);
-
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "OnError : called" + e.getMessage());
-
                     }
                 });
     }
-
     //deleteAll Class
     public void deleteAllClass() {
         isLoading.setValue(true);
@@ -159,23 +151,19 @@ public class ClassRepository {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe : called");
-
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete : called");
 //                        deleteAllStudents();
                         isLoading.setValue(false);
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError : called" + e.getMessage());
                     }
                 });
     }
-
     //insert student
     public void insertStudent(final Students students) {
         isLoading.setValue(true);
@@ -191,24 +179,18 @@ public class ClassRepository {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe : called");
-
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete : called");
                         isLoading.setValue(false);
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError : called" + e.getMessage());
-
                     }
                 });
     }
-
     //update student
     public void updateStudent(final Students students) {
         Completable.fromAction(new Action() {
@@ -223,15 +205,11 @@ public class ClassRepository {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe : called");
-
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete : called");
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError : called" + e.getMessage());
@@ -239,7 +217,6 @@ public class ClassRepository {
                     }
                 });
     }
-
     public void deleteStudent(final Students students) {
         isLoading.setValue(true);
         Completable.fromAction(new Action() {
@@ -254,25 +231,18 @@ public class ClassRepository {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe : called");
-
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete : called");
                         isLoading.setValue(false);
-
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError : called" + e.getMessage());
-
                     }
                 });
     }
-
     //deleteAllStudent
     public void deleteAllStudents() {
         isLoading.setValue(true);
@@ -329,14 +299,11 @@ public class ClassRepository {
                     public void onComplete() {
                         Log.d(TAG, "onComplete : called");
                         isLoading.setValue(false);
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError : called" + e.getMessage());
-
-
                     }
                 });
     }

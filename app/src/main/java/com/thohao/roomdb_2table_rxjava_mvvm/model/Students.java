@@ -30,7 +30,7 @@ public class Students {
         this.class_id = class_id;
     }
 
-    //getter
+//getter
     public int getId() {
         return id;
     }
