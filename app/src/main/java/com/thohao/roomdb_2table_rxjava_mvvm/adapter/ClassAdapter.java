@@ -20,8 +20,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
     private List<Classes> classesList;
     private OnClassClickListener onClassClickListener;
+
     public ClassAdapter(List<Classes> classesList) {
-        this.classesList=classesList;
+        this.classesList = classesList;
     }
 
     public void setItemClickListener(OnClassClickListener onClassClickListener) {
@@ -31,7 +32,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
     @NonNull
     @Override
     public ClassAdapter.AdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.class_item_layout,null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_item_layout, null);
         AdapterViewHolder adapterViewHolder = new AdapterViewHolder(view, onClassClickListener);
 
         return adapterViewHolder;
@@ -64,21 +65,22 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
         public AdapterViewHolder(@NonNull View itemView, OnClassClickListener onClassClickListener) {
             super(itemView);
-            this.onClassClickListener=onClassClickListener;
-            mImageView=itemView.findViewById(R.id.image_view);
+            this.onClassClickListener = onClassClickListener;
+            mImageView = itemView.findViewById(R.id.image_view);
             mClassText = itemView.findViewById(R.id.text_view);
             mCardView = itemView.findViewById(R.id.card_view);
             mCardView.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             Classes currentClass = classesList.get(position);
             onClassClickListener.onClassClick(currentClass);
-
         }
     }
-    public interface OnClassClickListener{
+
+    public interface OnClassClickListener {
         void onClassClick(Classes classes);
     }
 }

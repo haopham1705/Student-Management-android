@@ -42,7 +42,6 @@ public class DialogClassAdd extends AppCompatDialogFragment {
     private MaterialCardView mImageSelectButton;
     private Bitmap mBitmap;
     private CreateClassListener mListener;
-
     private static final String TAG = "ccc_dialogclassadd";
 
     @NonNull
@@ -65,17 +64,17 @@ public class DialogClassAdd extends AppCompatDialogFragment {
         mImageSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check permission
+//check permission
                 RealRxPermission.getInstance(getActivity())
                         .request(Manifest.permission.READ_EXTERNAL_STORAGE)
                         .subscribe();
-
-                //go to gallery
+//go to gallery
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
             }
         });
+//save
         mBtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +86,6 @@ public class DialogClassAdd extends AppCompatDialogFragment {
                 }
             }
         });
-
 
         return builder.create();
     }
@@ -102,14 +100,12 @@ public class DialogClassAdd extends AppCompatDialogFragment {
                 try {
                     mBitmap = new Compressor(getActivity()).compressToBitmap(imageFile);
                     mImageView.setImageBitmap(mBitmap);
-                    Log.d(TAG, "OnActivityResult: ");
-
+                    Log.d(TAG, "Activity Result");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
     }
 
     @Override
@@ -123,7 +119,7 @@ public class DialogClassAdd extends AppCompatDialogFragment {
     }
 
     private String getRealPathFromURI(Uri contentURI) {
-        String result ;
+        String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
             result = contentURI.getPath();

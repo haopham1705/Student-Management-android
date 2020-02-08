@@ -20,9 +20,9 @@
         android:iconTint="@color/colorAccent"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_about"
+        android:id="@+id/action_exit"
         android:orderInCategory="300"
-        android:title="About"
+        android:title="Exit"
         app:showAsAction="never" />
 
 </menu>

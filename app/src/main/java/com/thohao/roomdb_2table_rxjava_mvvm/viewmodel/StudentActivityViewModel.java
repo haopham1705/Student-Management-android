@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 import com.thohao.roomdb_2table_rxjava_mvvm.repository.ClassRepository;
 
@@ -33,17 +32,14 @@ public class StudentActivityViewModel extends AndroidViewModel {
     public void insert(Students students){
         classRepository.insertStudent(students);
     }
-
     //Update Movie
     public void update(Students students){
         classRepository.updateStudent(students);
     }
-
     //Delete Movie
     public void delete(Students students){
         classRepository.deleteStudent(students);
     }
-
     //Delete All Movie
     public void deleteAllStudentByClass( int class_id){
         classRepository.deleteAllStudentsByClass(class_id);

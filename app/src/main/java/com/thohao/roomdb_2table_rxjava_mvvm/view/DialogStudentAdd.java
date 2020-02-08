@@ -34,7 +34,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class DialogStudentAdd extends AppCompatDialogFragment {
 
-
     private EditText mTxtName;
     private EditText mTxtAge;
     private EditText mTxtAddress;
@@ -101,9 +100,10 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
                 try {
                     mBitmap = new Compressor(getActivity()).compressToBitmap(imageFile);
                     mImageview.setImageBitmap(mBitmap);
-                    Log.d(TAG, "onActivityResult: ");
+                    Log.d(TAG, "Activity Result");
                 } catch (IOException e) {
                     e.printStackTrace();
+
                 }
 
             }
@@ -115,7 +115,7 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
+        if (cursor == null) {
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();

@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
+import com.thohao.roomdb_2table_rxjava_mvvm.database.dao.OnListener;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 import com.thohao.roomdb_2table_rxjava_mvvm.utils.DataConverter;
 import com.thohao.roomdb_2table_rxjava_mvvm.view.StudentsActivity;
@@ -18,22 +20,21 @@ import com.thohao.roomdb_2table_rxjava_mvvm.view.StudentsActivity;
 import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
-    private List<Students>studentsList;
+    private List<Students> studentsList;
     private OnStudentClickListener onStudentClickListener;
+
     public StudentAdapter(List<Students> studentsList) {
         this.studentsList = studentsList;
     }
 
-    public void setItemOnClick(OnStudentClickListener onStudentClickListener) {
+    public void setItemClickListener(OnStudentClickListener onStudentClickListener) {
         this.onStudentClickListener = onStudentClickListener;
     }
-
 
     @NonNull
     @Override
     public StudentAdapter.StudentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_student_layout, null);
-
         StudentViewHolder studentViewHolder = new StudentViewHolder(view, onStudentClickListener);
         return studentViewHolder;
     }
@@ -58,35 +59,36 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     public int getItemCount() {
         return studentsList.size();
     }
-    public class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mTxtName;
-        public TextView mTxtAge;
-        public TextView mTxtAddress;
-        public ImageView mStudentImage;
 
-        private OnStudentClickListener mListener;
+    public class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView mTxtName;
+        private TextView mTxtAge;
+        private TextView mTxtAddress;
+        private ImageView mStudentImage;
+        private MaterialCardView mCardView;
+
+
+        private OnStudentClickListener onStudentClickListener;
 
         public StudentViewHolder(@NonNull View itemView, OnStudentClickListener onStudentClickListener) {
             super(itemView);
-            this.mListener = onStudentClickListener;
-            mTxtName=itemView.findViewById(R.id.textview_name);
+            this.onStudentClickListener = onStudentClickListener;
+            mTxtName = itemView.findViewById(R.id.textview_name);
             mTxtAge = itemView.findViewById(R.id.textview_age);
             mTxtAddress = itemView.findViewById(R.id.textview_address);
             mStudentImage = itemView.findViewById(R.id.image_view);
+            mCardView = itemView.findViewById(R.id.select_image);
+            mCardView.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             Students currentStudents = studentsList.get(position);
-            Students students = new Students(currentStudents.getName(),currentStudents.getAge(),currentStudents.getAddress(),currentStudents.getImage());
-            students.setId(currentStudents.getId());
-            mListener.onStudentClick(students);
-            Log.d("ccc_studentadapter", "StAdapter onClick");
-
+//            Students students = new Students(currentStudents.getName(), currentStudents.getAge(), currentStudents.getAddress(), currentStudents.getImage());
+//            students.setId(currentStudents.getId());
+            onStudentClickListener.onStudentClick(currentStudents);
         }
     }
-
     public interface OnStudentClickListener {
         void onStudentClick(Students students);
     }

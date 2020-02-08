@@ -164,7 +164,7 @@ public class ClassRepository {
                     }
                 });
     }
-    //insert student
+//insert student
     public void insertStudent(final Students students) {
         isLoading.setValue(true);
         Completable.fromAction(new Action() {
@@ -191,7 +191,7 @@ public class ClassRepository {
                     }
                 });
     }
-    //update student
+//update student
     public void updateStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override
@@ -243,7 +243,7 @@ public class ClassRepository {
                     }
                 });
     }
-    //deleteAllStudent
+//deleteAllStudent
     public void deleteAllStudents() {
         isLoading.setValue(true);
         Completable.fromAction(new Action() {

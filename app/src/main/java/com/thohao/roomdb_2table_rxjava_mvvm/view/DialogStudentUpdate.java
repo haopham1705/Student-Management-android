@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,23 +41,20 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
     private Bitmap mBitmap;
     private Button mButtonSave;
     private MaterialCardView mImageSelectBtn;
-    private DialogStudentUpdate.UpdateStudentLayer mListener;
+    private DialogStudentUpdate.OnUpdateStudentLayer onUpdateStudentLayer;
     private static final String TAG = "ccc_dialogstudentupdate";
-
     private Students students;
 
     public void setStudents(Students students) {
         this.students = students;
-
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_student_layout, null);
+        View view = inflater.inflate(R.layout.dialog_update_student_layout, null);
 
         builder.setView(view);
         builder.setCancelable(true);
@@ -68,12 +66,13 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
         mImageview = view.findViewById(R.id.image_view);
         mImageSelectBtn = view.findViewById(R.id.select_image);
         mButtonSave = view.findViewById(R.id.btn_save);
+
         mName.setText(students.getName());
         mAge.setText(students.getAge());
         mAddress.setText(students.getAddress());
-        //get image
+//get image
         mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
-
+//select image
         mImageSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,11 +88,20 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                 String age = mAge.getText().toString();
                 String address = mAddress.getText().toString();
 
+                //ImageView img=mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
                 if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && mBitmap != null) {
                     Students currentStudents = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
                     currentStudents.setId(students.getId());
-                    mListener.updateNewStudents(currentStudents);
+                    onUpdateStudentLayer.updateNewStudents(currentStudents);
                     dismiss();
+                    Log.d(TAG, "Updated");
+
+                    //getActivity() hien toast trong Dialog
+                    Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "Return update item");
+                    Toast.makeText(getActivity(), "Pls choose your image", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });
@@ -110,7 +118,7 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                 try {
                     mBitmap = new Compressor(getActivity()).compressToBitmap(imageFile);
                     mImageview.setImageBitmap(mBitmap);
-                    Log.d(TAG, "onActivityResult: ");
+                    Log.d(TAG, "Activity Result");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -121,7 +129,7 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
+        if (cursor == null) {
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();
@@ -135,10 +143,10 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (UpdateStudentLayer) context;
+        onUpdateStudentLayer = (OnUpdateStudentLayer) context;
     }
 
-    public interface UpdateStudentLayer {
+    public interface OnUpdateStudentLayer {
         void updateNewStudents(Students students);
     }
 }
