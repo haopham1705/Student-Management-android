@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,11 +83,13 @@ public class DialogClassAdd extends AppCompatDialogFragment {
                 if (!class_name.isEmpty() && mBitmap != null) {
                     Classes classes = new Classes(class_name, DataConverter.convertImageToByteArray(mBitmap));
                     mListener.saveNameClass(classes);
+                    Log.d(TAG, "Saved item class");
+                    Log.d(TAG, "Saved");
+                    Toast.makeText(getActivity(),"Saved",Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
             }
         });
-
         return builder.create();
     }
 

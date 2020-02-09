@@ -21,6 +21,7 @@ public class Students {
         this.address = address;
         this.image = image;
     }
+
 //setter
     public void setId(int id) {
         this.id = id;
@@ -28,6 +29,22 @@ public class Students {
 
     public void setClass_id(int class_id) {
         this.class_id = class_id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
 //getter

@@ -19,28 +19,23 @@ public class StudentActivityViewModel extends AndroidViewModel {
         super(application);
         classRepository = new ClassRepository(application);
     }
-
-    //get all student
+//get all student
     public Flowable<List<Students>> getAllStudent(int class_id) {
         return classRepository.getAllStudents(class_id);
     }
-    //Get Loading State
-    public MutableLiveData<Boolean> getIsLoading(){
-        return classRepository.getIsLoading();
-    }
-    //Insert Movie
+//Insert
     public void insert(Students students){
         classRepository.insertStudent(students);
     }
-    //Update Movie
+//Update
     public void update(Students students){
         classRepository.updateStudent(students);
     }
-    //Delete Movie
+//Delete
     public void delete(Students students){
         classRepository.deleteStudent(students);
     }
-    //Delete All Movie
+//Delete all Student by class
     public void deleteAllStudentByClass( int class_id){
         classRepository.deleteAllStudentsByClass(class_id);
     }

@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
@@ -24,36 +24,24 @@
                 android:layout_gravity="center"
                 android:text="Students"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/white"
                 android:textStyle="normal" />
         </androidx.appcompat.widget.Toolbar>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-7dp"
-            android:layout_marginBottom="-7dp"
-            android:background="@android:color/white"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_student" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        app:borderWidth="0dp"
-        app:elevation="5dp"
-        app:fabSize="normal"
-        app:backgroundTint="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add"
-        android:tint="@android:color/white" />
+        android:tint="@android:color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        app:elevation="5dp"
+        app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

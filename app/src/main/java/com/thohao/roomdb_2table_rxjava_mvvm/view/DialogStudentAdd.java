@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,13 +66,13 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         mImageSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Go to gallery
+//Go to gallery
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 1);
             }
         });
-
+//button save
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +83,8 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
                 if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && mBitmap != null) {
                     Students students = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
                     onCreateStudentListener.saveNewStudent(students);
+                    Log.d(TAG, "Saved");
+                    Toast.makeText(getActivity(),"Saved",Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
             }
@@ -89,7 +92,7 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
 
         return builder.create();
     }
-
+//activity result
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -103,15 +106,10 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
                     Log.d(TAG, "Activity Result");
                 } catch (IOException e) {
                     e.printStackTrace();
-
                 }
-
             }
-
         }
-
     }
-
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
@@ -125,13 +123,12 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         }
         return result;
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onCreateStudentListener = (OnCreateStudentListener) context;
     }
-
+//interface
     public interface OnCreateStudentListener {
         void saveNewStudent(Students students);
 

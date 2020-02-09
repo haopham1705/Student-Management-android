@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:padding="10dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
     <TextView
-        android:text="Select image : "
-        android:textSize="15sp"
-        android:textStyle="italic"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner"
+        android:padding="5dp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_gravity="center_horizontal"/>
+
+
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/select_image"
         android:layout_width="wrap_content"
@@ -26,6 +37,8 @@
             android:layout_height="wrap_content">
 
             <FrameLayout
+                android:background="@drawable/rounded_corner"
+                android:padding="5dp"
                 android:layout_width="150dp"
                 android:layout_height="200dp">
 
@@ -40,6 +53,13 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select image"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textSize="15sp"
+        android:textStyle="italic" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +72,8 @@
             android:id="@+id/editext_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Name"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -67,8 +88,8 @@
             android:layout_height="wrap_content"
             android:hint="Age"
             android:inputType="number"
-            android:maxLines="1"
-            android:maxLength="3" />
+            android:maxLength="3"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -81,8 +102,9 @@
             android:id="@+id/edittext_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="Address" />
+            android:hint="Address"
+            android:inputType="text"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -90,8 +112,9 @@
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corner"
         android:layout_margin="5dp"
+        android:background="@drawable/rounded_corner"
         android:text="Update"
         android:textColor="@android:color/white"></com.google.android.material.button.MaterialButton>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

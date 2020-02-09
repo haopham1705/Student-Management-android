@@ -87,20 +87,17 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                 String name = mName.getText().toString();
                 String age = mAge.getText().toString();
                 String address = mAddress.getText().toString();
-
-                //ImageView img=mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
                 if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && mBitmap != null) {
                     Students currentStudents = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
                     currentStudents.setId(students.getId());
                     onUpdateStudentLayer.updateNewStudents(currentStudents);
                     dismiss();
                     Log.d(TAG, "Updated");
-
                     //getActivity() hien toast trong Dialog
                     Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "Return update item");
-                    Toast.makeText(getActivity(), "Pls choose your image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please choose your image", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

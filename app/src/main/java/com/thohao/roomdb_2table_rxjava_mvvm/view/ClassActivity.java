@@ -8,15 +8,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+//import androidx.appcompat.widget.SearchView;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -35,30 +38,26 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ClassActivity extends AppCompatActivity implements
-        DialogClassAdd.CreateClassListener, ClassAdapter.OnClassClickListener {
+        DialogClassAdd.CreateClassListener, ClassAdapter.OnClassClickListener,DialogClassUpdate.UpdateClassListener {
 
     private ClassActivityViewModel classActivityViewModel;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RecyclerView mRecyclerView;
     private ClassAdapter classAdapter;
-    private ProgressBar mProgressBar;
     private static final String TAG = "ccc_classactivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
-
         intToolbar();
         FloatingActionButton fab = findViewById(R.id.fab);
+//set recyclerview
         mRecyclerView = findViewById(R.id.recycler_view);
-        mProgressBar = findViewById(R.id.progress);
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-//viewmodel
+//Viewmodel
         classActivityViewModel = ViewModelProviders.of(this).get(ClassActivityViewModel.class);
 
         Disposable disposable = classActivityViewModel.getAllClass()
@@ -73,62 +72,99 @@ public class ClassActivity extends AppCompatActivity implements
                 });
         compositeDisposable.add(disposable);
 
-        classActivityViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                Log.d(TAG, "onChanged: " + aBoolean);
-                if (aBoolean != null) {
-                    if (aBoolean) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                    } else {
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
+//Floating action button
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogClassAdd();
             }
         });
+
+//Swipe to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0
-                , ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                , ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
-
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+                new MaterialAlertDialogBuilder(ClassActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
+                        .setMessage("Do you want delete ?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                classActivityViewModel.updateClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                //call update để hiện thị lại item đã bị ẩn đi sau khi swipe
+                                Toast.makeText(ClassActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        //setOnCancelListener khi bỏ chọn dialog để hiện thị lại item
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                classActivityViewModel.updateClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                Toast.makeText(ClassActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .create().show();
             }
         }).attachToRecyclerView(mRecyclerView);
 
     }
-
+//open insert class dialog
     public void openDialogClassAdd() {
         DialogClassAdd dialogClassAdd = new DialogClassAdd();
         dialogClassAdd.show(getSupportFragmentManager(), "create dialog");
 
     }
-
+//setAdapter
     private void setDataToRecyclerView(List<Classes> classes) {
         classAdapter = new ClassAdapter(classes);
         classAdapter.setItemClickListener(this);
         mRecyclerView.setAdapter(classAdapter);
     }
 
+//toolBar
     private void intToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
 
+        //getSupportActionBar().setDisplayShowHomeEnabled(false);
+        toolbar.setTitle("LiveF Manager");
+        toolbar.setTitleTextColor(Color.WHITE);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+//Searching
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                classAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -136,40 +172,36 @@ public class ClassActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        //Delete All
+ //Delete All
         if (id == R.id.action_delete_all) {
             new MaterialAlertDialogBuilder(ClassActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
                     .setMessage("Do you want delete all ?")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteClassAndStudent();
                             Toast.makeText(ClassActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            Toast.makeText(ClassActivity.this, "You choice no", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClassActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
                         }
                     }).create().show();
             return true;
         }
-//exit
-        else if (id == R.id.action_exit) {
-            Log.d(TAG, "Exit");
+//logout
+        else if (id == R.id.action_logout) {
+            Log.d(TAG, "Log out");
+            startActivity(new Intent(ClassActivity.this, LoginActivity.class));
+            //de ket thuc activity
             finish();
-            System.exit(0);
-        }
-//search
-        else if (id == R.id.action_search) {
-            Toast.makeText(ClassActivity.this, "Searching..." + TAG, Toast.LENGTH_SHORT).show();
-            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
-
     private void deleteClassAndStudent() {
         classActivityViewModel.deleteAllClass();
     }
@@ -178,6 +210,12 @@ public class ClassActivity extends AppCompatActivity implements
     public void onClassClick(Classes classes) {
         Log.d(TAG, "onClick item");
         moveToStudentActivity(classes);
+    }
+
+    @Override
+    public void onClassLongClick(Classes classes) {
+        openDialogUpdateClass(classes);
+         Log.d(TAG, "onLongClick item");
     }
 
     public void moveToStudentActivity(Classes classes) {
@@ -189,14 +227,28 @@ public class ClassActivity extends AppCompatActivity implements
 
     @Override
     public void saveNameClass(Classes classes) {
-        Log.d(TAG, "saveNewGenre: " + classes.getClassname());
+        Log.d(TAG, "save Class " + classes.getClassname());
         classActivityViewModel.insertClass(classes);
     }
+    @Override
+    public void updateNameClass(Classes classes) {
+        Classes currentClass = classes;
+        currentClass.setId(classes.getId());
+        classActivityViewModel.updateClass(currentClass);
 
+    }
+
+    private void openDialogUpdateClass(Classes classes) {
+        DialogClassUpdate dialogClassUpdate = new DialogClassUpdate();
+        dialogClassUpdate.setClass(classes);
+        dialogClassUpdate.show(getSupportFragmentManager(),"update class dialog");
+    }
 //onDestroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
     }
+
+
 }

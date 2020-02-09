@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thohao.roomdb_2table_rxjava_mvvm">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_logothelivef"
@@ -11,18 +12,20 @@
         android:roundIcon="@mipmap/ic_logothelivef_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ClassActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity android:name=".view.StudentsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".view.LoginActivity"></activity>
+        <activity android:name=".view.SearchActivity" />
+        <activity
+            android:name=".view.ClassActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.StudentsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.MainActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -14,44 +14,29 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 public class ClassActivityViewModel extends AndroidViewModel {
-
     private ClassRepository classRepository;
-
     public ClassActivityViewModel(@NonNull Application application) {
         super(application);
         classRepository = new ClassRepository(application);
     }
-
-    //get all class
+//get all class
     public Flowable<List<Classes>> getAllClass() {
         return classRepository.getAllClasses();
     }
-
-    //get loading state
-    public MutableLiveData<Boolean> getIsLoading() {
-        return classRepository.getIsLoading();
-    }
-
-    //Insert
+//Insert
     public void insertClass(Classes classes) {
         classRepository.insertClass(classes);
     }
-
-    //update
+//update
     public void updateClass(Classes classes) {
-
         classRepository.updateClass(classes);
     }
-
-    //delete
+//delete
     public void deleteClass(Classes classes) {
         classRepository.deleteClass(classes);
-
     }
-
-    //delete all
+//delete all class
     public void deleteAllClass() {
         classRepository.deleteAllClass();
-
     }
 }

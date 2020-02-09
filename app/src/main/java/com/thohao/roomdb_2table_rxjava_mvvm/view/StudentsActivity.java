@@ -3,13 +3,11 @@ package com.thohao.roomdb_2table_rxjava_mvvm.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,16 +15,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
 import com.thohao.roomdb_2table_rxjava_mvvm.adapter.StudentAdapter;
-import com.thohao.roomdb_2table_rxjava_mvvm.database.dao.OnListener;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 import com.thohao.roomdb_2table_rxjava_mvvm.viewmodel.StudentActivityViewModel;
 
@@ -41,17 +38,16 @@ import io.reactivex.schedulers.Schedulers;
 public class StudentsActivity extends AppCompatActivity
         implements DialogStudentAdd.OnCreateStudentListener,
         DialogStudentUpdate.OnUpdateStudentLayer,
-        StudentAdapter.OnStudentClickListener {
+        StudentAdapter.OnStudentClickListener,
+            DialogShowStudent.OnShowStudentLayer{
 
     private TextView mTxtTitleToolbar;
-    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private StudentAdapter studentAdapter;
     private String mClass = "";
     private int class_id;
     private List<Students> list;
     private View parent;
-    //private MaterialAlertDialogBuilder builder;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private StudentActivityViewModel studentActivityViewModel;
     private static final String TAG = "ccc_studentactivity";
@@ -61,24 +57,24 @@ public class StudentsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students);
         //setItemOnlick
-        studentAdapter = new StudentAdapter(list);
-        //studentAdapter.setItemClickListener(this);
-        //parent = findViewById(android.R.id.content);
+        //studentAdapter = new StudentAdapter(list);
         mTxtTitleToolbar = findViewById(R.id.toolbar_title);
-        mProgressBar = findViewById(R.id.progress);
+//set recycler view
         mRecyclerView = findViewById(R.id.recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
         studentActivityViewModel = ViewModelProviders.of(this).get(StudentActivityViewModel.class);
+//set titles cho Student
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mClass = extras.getString("classname");
             class_id = extras.getInt("id");
-            Log.d(TAG, "onStart: " + class_id + "" + mClass);
-            mTxtTitleToolbar.setText(mClass + " Students");
+            Log.d(TAG, "getExtras: "+class_id + ".." + mClass);
+            mTxtTitleToolbar.setText("Class: "+mClass);
         }
+
         Disposable disposable = studentActivityViewModel.getAllStudent(class_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,55 +86,49 @@ public class StudentsActivity extends AppCompatActivity
                     }
                 });
         compositeDisposable.add(disposable);
-//swipe
+
+//swipe to Delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
+                0,  ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
         ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
-//swipe delete
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 new MaterialAlertDialogBuilder(StudentsActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
                         .setMessage("Do you want delete ?")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
                                 Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
+                                //call update để hiện thị lại item đã bị ẩn đi sau khi swipe
                                 studentActivityViewModel.update(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
-
-                                //call update để hiện thị lại item đã bị ẩn đi sau khi wipe
                                 Toast.makeText(StudentsActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
                             }
-                        }).create().show();
-                //studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
-
+                        })
+                        //setOnCancelListener khi bỏ chọn dialog để hiện thị lại item
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                studentActivityViewModel.update(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
+                                Toast.makeText(StudentsActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .create().show();
             }
         }).attachToRecyclerView(mRecyclerView);
-        studentActivityViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                Log.d(TAG, "onChanged: " + aBoolean);
-                if (aBoolean != null) {
-                    if (aBoolean) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                    } else {
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
-//Open Add dialog
+
+//Open insert dialog
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,12 +136,9 @@ public class StudentsActivity extends AppCompatActivity
                 openAddStudentDialog();
             }
         });
-//Update dialog
-
         intToolbar();
     }
-
-//Add dialog
+//insert dialog
     private void openAddStudentDialog() {
         DialogStudentAdd dialogStudentAdd = new DialogStudentAdd();
         dialogStudentAdd.show(getSupportFragmentManager(), "Create Student Dialog");
@@ -163,13 +150,12 @@ public class StudentsActivity extends AppCompatActivity
         studentAdapter.setItemClickListener(this);
         mRecyclerView.setAdapter(studentAdapter);
     }
-
-//Actionbar
+//toolBar
     private void intToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//Forward button
+//back home button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_back02);
@@ -184,6 +170,23 @@ public class StudentsActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+//Search
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                studentAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
         return true;
     }
 //Action Menu
@@ -194,15 +197,14 @@ public class StudentsActivity extends AppCompatActivity
         if (id == R.id.action_delete_all) {
             new MaterialAlertDialogBuilder(StudentsActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
                     .setMessage("Do you want delete all ?")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteAllStudent();
                             Toast.makeText(StudentsActivity.this, "successfull", Toast.LENGTH_SHORT).show();
-
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -210,39 +212,32 @@ public class StudentsActivity extends AppCompatActivity
                         }
                     }).create().show();
             return true;
-//exit
-        } else if (id == R.id.action_exit) {
-            Log.d(TAG,"Exit");
+//Log out
+        } else if (id == R.id.action_logout) {
+            Log.d(TAG, "Log out");
+            startActivity(new Intent(StudentsActivity.this, LoginActivity.class));
+            //de ket thuc activity
             finish();
-            System.exit(0);
-        }
-//Search
-        else if (id == R.id.action_search) {
-            Toast.makeText(StudentsActivity.this, "Searching..." + TAG, Toast.LENGTH_SHORT).show();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
+//delete all student
     private void deleteAllStudent() {
         studentActivityViewModel.deleteAllStudentByClass(class_id);
 
     }
-
- //Destroy
+//Destroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
     }
-
     @Override
     public void saveNewStudent(Students students) {
         Students currentStudent = students;
         currentStudent.setClass_id(class_id);
         studentActivityViewModel.insert(currentStudent);
     }
-
 //update
     @Override
     public void updateNewStudents(Students students) {
@@ -250,11 +245,24 @@ public class StudentsActivity extends AppCompatActivity
         currentStudent.setClass_id(class_id);
         studentActivityViewModel.update(currentStudent);
     }
+//show
+    @Override
+    public void showStudents(Students students) {
+        Students currentStudent = students;
+        currentStudent.setClass_id(class_id);
+        studentActivityViewModel.update(currentStudent);
 
-//onClickStudent open update dialog
+    }
+//onStudentClick
     @Override
     public void onStudentClick(Students students) {
+        openDialogShowStudent(students);
+    }
+//onStudent LongClick
+    @Override
+    public void onStudentLongClick(Students students) {
         Log.d(TAG, "onStudentClick" + students.getId());
+
         openDialogUpdateStudent(students);
     }
 
@@ -262,6 +270,14 @@ public class StudentsActivity extends AppCompatActivity
     private void openDialogUpdateStudent(Students students) {
         DialogStudentUpdate dialogStudentUpdate = new DialogStudentUpdate();
         dialogStudentUpdate.setStudents(students);
-        dialogStudentUpdate.show(getSupportFragmentManager(), "update student");
+        dialogStudentUpdate.show(getSupportFragmentManager(), "update student dialog");
     }
+
+    private void openDialogShowStudent(Students students) {
+        DialogShowStudent dialogShowStudent = new DialogShowStudent();
+        dialogShowStudent.setStudents(students);
+        dialogShowStudent.show(getSupportFragmentManager(),"Show student dialog");
+    }
+
+
 }

@@ -24,10 +24,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ClassRepository {
     private ClassDao classDao;
     private StudentDao studentDao;
+
     private Flowable<List<Classes>> allClasses;
     private Flowable<List<Students>> allStudents;
-    MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private static final String TAG = "ClassRepository";
+
+    private static final String TAG = "ccc_classrepository";
 
     public ClassRepository(Application application) {
         ClassDatabase classDatabase = ClassDatabase.getInstance(application);
@@ -35,24 +36,17 @@ public class ClassRepository {
         studentDao = classDatabase.studentDao();
     }
 
-    //get all class
+//get all class
     public Flowable<List<Classes>> getAllClasses() {
         return classDao.getAllClass();
     }
-
-    //get loading state
-    public MutableLiveData<Boolean> getIsLoading() {
-        return isLoading;
-    }
-
-    //get all student under the specific class
+//get all student by class
     public Flowable<List<Students>> getAllStudents(int class_id) {
         return studentDao.getAllStudentsByClass(class_id);
     }
 
-    //insert class
+//Insert class
     public void insertClass(final Classes classes) {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -64,23 +58,22 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
-                        isLoading.setValue(false);
+                        Log.d(TAG, "onComplete");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }
 
-    //update class
+//Update class
     public void updateClass(final Classes classes) {
 
         Completable.fromAction(new Action() {
@@ -94,23 +87,23 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplate : called");
+                        Log.d(TAG, "onComplate");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }
-    //delete class
+
+//Delete class
     public void deleteClass(final Classes classes) {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -122,23 +115,24 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                         //deleteAllStudents(classes.getId());
-                        isLoading.setValue(false);
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "OnError : called" + e.getMessage());
+                        Log.d(TAG, "OnError" + e.getMessage());
                     }
                 });
     }
-    //deleteAll Class
+
+//DeleteAll Class
     public void deleteAllClass() {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -150,23 +144,25 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+
+                        Log.d(TAG, "onSubscribe");
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
+                        Log.d(TAG, "onComplete");
 //                        deleteAllStudents();
-                        isLoading.setValue(false);
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }
-//insert student
+
+//Insert student
     public void insertStudent(final Students students) {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -178,20 +174,22 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
-                        isLoading.setValue(false);
+                        Log.d(TAG, "onComplete");
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }
-//update student
+
+//Update student
     public void updateStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override
@@ -204,21 +202,23 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
+                        Log.d(TAG, "onComplete");
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
 
                     }
                 });
     }
+
     public void deleteStudent(final Students students) {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -230,22 +230,23 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
-                        isLoading.setValue(false);
+                        Log.d(TAG, "onComplete");
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }
-//deleteAllStudent
+
+//delete All Student
     public void deleteAllStudents() {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -257,29 +258,26 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
+                        Log.d(TAG, "onSubscribe");
 
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
-                        isLoading.setValue(false);
+                        Log.d(TAG, "onComplete");
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
 
                     }
                 });
-
     }
 
-    //delete all student by class
+//delete all student by class
     public void deleteAllStudentsByClass(final int class_id) {
-        isLoading.setValue(true);
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
@@ -291,19 +289,17 @@ public class ClassRepository {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe : called");
-
+                        Log.d(TAG, "onSubscribe");
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete : called");
-                        isLoading.setValue(false);
+                        Log.d(TAG, "onComplete");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError : called" + e.getMessage());
+                        Log.d(TAG, "onError" + e.getMessage());
                     }
                 });
     }

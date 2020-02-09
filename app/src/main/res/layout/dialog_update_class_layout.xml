@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<LinearLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Insert student"
+        android:text="Update"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_corner"
         android:padding="5dp"
         android:textColor="@color/colorPrimary"
@@ -30,7 +27,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/select_image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:elevation="5dp"
@@ -41,14 +38,15 @@
             android:layout_height="wrap_content">
 
             <FrameLayout
-                android:layout_width="150dp"
-                android:layout_height="200dp">
+                android:background="@drawable/rounded_corner"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
 
                 <ImageView
                     android:id="@+id/image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/placeholder" />
             </FrameLayout>
@@ -64,42 +62,11 @@
         android:layout_margin="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editext_name"
+            android:id="@+id/edittext_className"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="Class name"
             android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edittext_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Age"
-            android:inputType="number"
-            android:maxLength="3"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edittext_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Address"
-            android:inputType="text"
-            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -109,8 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/rounded_corner"
-        android:text="Save"
+        android:text="Update"
         android:textColor="@android:color/white"></com.google.android.material.button.MaterialButton>
 
 </LinearLayout>
-</ScrollView>
