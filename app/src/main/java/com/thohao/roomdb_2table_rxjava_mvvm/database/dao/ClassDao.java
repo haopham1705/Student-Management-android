@@ -24,6 +24,8 @@ public interface ClassDao {
     @Delete
     void delete(Classes classes);
 
+
+
     @Query("DELETE FROM class_table")
     void deleteAllClass();
 

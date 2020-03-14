@@ -64,14 +64,8 @@ public class DialogShowStudent extends AppCompatDialogFragment {
         mAge.setText("Age: "+students.getAge());
         mAddress.setText("Address: "+students.getAddress());
         mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
-
-
         return builder.create();
     }
-
-
-
-
     public interface OnShowStudentLayer {
         void showStudents(Students students);
     }

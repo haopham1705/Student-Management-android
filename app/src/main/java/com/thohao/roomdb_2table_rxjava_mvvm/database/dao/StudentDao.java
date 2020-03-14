@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface StudentDao {
 
     @Delete
     void delete(Students students);
+    
 //delete all students
     @Query("DELETE FROM student_table")
     void deleteAllStudents();

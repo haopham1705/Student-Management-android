@@ -217,7 +217,7 @@ public class ClassRepository {
                     }
                 });
     }
-
+//delete student
     public void deleteStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override

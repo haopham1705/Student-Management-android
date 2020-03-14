@@ -24,6 +24,7 @@ dependencies {
     def room_version = "2.2.2"
     def recyclerview_version = "1.1.0"
     def cardview_version = "1.0.0"
+    def rxjava_version = "2.1.1"
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -35,8 +36,8 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
     implementation "androidx.cardview:cardview:$cardview_version"
     //RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.1'
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
     //Picasso
@@ -55,4 +56,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
 }

@@ -24,10 +24,18 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     private List<Students> studentsList;
     private List<Students> studentsListfull;
     private OnStudentClickListener onStudentClickListener;
+    //undo
+    private int mStudentPosition;
+
 
     public StudentAdapter(List<Students> studentsList) {
         this.studentsList = studentsList;
         studentsListfull = new ArrayList<>(studentsList);
+    }
+    //undo
+    void setStudents(List<Students> students) {
+        this.studentsList = students;
+        notifyDataSetChanged();
     }
 
     public void setItemClickListener(OnStudentClickListener onStudentClickListener) {
@@ -61,6 +69,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     @Override
     public int getItemCount() {
         return studentsList.size();
+    }
+
+//undo delete
+    public void undoDelete() {
+        studentsList.add(mStudentPosition, studentsListfull.get(studentsListfull.size() - 1));
+        studentsListfull.remove(studentsListfull.size() - 1);
+        notifyItemInserted(mStudentPosition);
     }
 
 //getFilter

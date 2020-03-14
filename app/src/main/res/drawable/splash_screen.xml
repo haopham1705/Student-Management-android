@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/white"/>
     <item>
-        <bitmap android:src="@drawable/splashscreen_logo_livef"
+        <bitmap android:src="@drawable/splashcreen_thelivef_shape"
             android:gravity="center"/>
     </item>
 </layer-list>

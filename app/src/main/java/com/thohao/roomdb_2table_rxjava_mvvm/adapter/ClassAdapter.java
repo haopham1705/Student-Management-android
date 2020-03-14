@@ -25,7 +25,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
     private List<Classes> classesList;
     private List<Classes> classesListfull;
+    //undo delete
+    private int mClassPosition;
+
     private OnClassClickListener onClassClickListener;
+
+    //undo delete
+    void setClasses(List<Classes> classes) {
+        this.classesList = classes;
+        notifyDataSetChanged();
+    }
 
     public ClassAdapter(List<Classes> classesList) {
         this.classesList = classesList;
@@ -62,6 +71,17 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
     public int getItemCount() {
         return classesList.size();
     }
+
+    //Undo delete
+    public void onItemDissmiss(int position) {
+
+    }
+    public void undoDelete() {
+        classesList.add(mClassPosition, classesListfull.get(classesListfull.size() - 1));
+        classesListfull.remove(classesListfull.size() - 1);
+        notifyItemInserted(mClassPosition);
+    }
+
 
 //getFilter
     @Override
@@ -106,6 +126,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             onClassClickListener.onClassLongClick(currentStudents);
             return true;
         }
+
+            public void restoreItem() {
+            int position=getAdapterPosition();
+                Classes item = classesList.get(position);
+                classesList.add(position, item);
+                notifyItemInserted(position);
+
+        }
     }
 
 //interface
@@ -114,6 +142,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
         void onClassLongClick(Classes classes);
     }
+
 
 //Fiter-Searching
     private Filter classFilter = new Filter() {
@@ -139,7 +168,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             return results;
         }
 
-
+//publish results searching
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             classesList.clear();
@@ -148,6 +177,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
         }
     };
+
+
 
 }
 

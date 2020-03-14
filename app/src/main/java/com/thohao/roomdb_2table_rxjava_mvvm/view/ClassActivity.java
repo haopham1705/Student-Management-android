@@ -3,6 +3,7 @@ package com.thohao.roomdb_2table_rxjava_mvvm.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -13,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +22,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
 import com.thohao.roomdb_2table_rxjava_mvvm.adapter.ClassAdapter;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Classes;
@@ -38,12 +44,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ClassActivity extends AppCompatActivity implements
-        DialogClassAdd.CreateClassListener, ClassAdapter.OnClassClickListener,DialogClassUpdate.UpdateClassListener {
+        DialogClassAdd.CreateClassListener, ClassAdapter.OnClassClickListener, DialogClassUpdate.UpdateClassListener {
 
     private ClassActivityViewModel classActivityViewModel;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RecyclerView mRecyclerView;
     private ClassAdapter classAdapter;
+
     private static final String TAG = "ccc_classactivity";
 
     @Override
@@ -51,6 +58,7 @@ public class ClassActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
         intToolbar();
+
         FloatingActionButton fab = findViewById(R.id.fab);
 //set recyclerview
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -60,7 +68,7 @@ public class ClassActivity extends AppCompatActivity implements
 //Viewmodel
         classActivityViewModel = ViewModelProviders.of(this).get(ClassActivityViewModel.class);
 
-        Disposable disposable = classActivityViewModel.getAllClass()
+        final Disposable disposable = classActivityViewModel.getAllClass()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Classes>>() {
@@ -87,6 +95,7 @@ public class ClassActivity extends AppCompatActivity implements
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 new MaterialAlertDialogBuilder(ClassActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
@@ -94,8 +103,43 @@ public class ClassActivity extends AppCompatActivity implements
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
-                                Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                /*classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();*/
+                                //showSnackbar();
+                                //int position = viewHolder.getAdapterPosition();
+//snackbar undo delete...
+                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
+                                        .setAction("UNDO", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                classAdapter.undoDelete();
+                                                classActivityViewModel.updateClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                                Toast.makeText(ClassActivity.this, "Undo successfull", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                         .addCallback(new Snackbar.Callback(){
+                                             @Override
+                                             public void onDismissed(Snackbar transientBottomBar, int event) {
+                                                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                                     classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                                     Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                                 }
+                                             }
+                                         })
+                                        .setActionTextColor(Color.GREEN);
+                                snackbar.show();
+
+                                //Handler
+                                /*new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                        Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                },5000);*/
+
                             }
                         })
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -120,13 +164,15 @@ public class ClassActivity extends AppCompatActivity implements
         }).attachToRecyclerView(mRecyclerView);
 
     }
+
 //open insert class dialog
     public void openDialogClassAdd() {
         DialogClassAdd dialogClassAdd = new DialogClassAdd();
         dialogClassAdd.show(getSupportFragmentManager(), "create dialog");
 
     }
-//setAdapter
+
+    //setAdapter
     private void setDataToRecyclerView(List<Classes> classes) {
         classAdapter = new ClassAdapter(classes);
         classAdapter.setItemClickListener(this);
@@ -143,6 +189,7 @@ public class ClassActivity extends AppCompatActivity implements
         toolbar.setTitle("LiveF Manager");
         toolbar.setTitleTextColor(Color.WHITE);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -168,11 +215,11 @@ public class ClassActivity extends AppCompatActivity implements
         return true;
     }
 
-//option menu
+    //option menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
- //Delete All
+        //Delete All
         if (id == R.id.action_delete_all) {
             new MaterialAlertDialogBuilder(ClassActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
                     .setMessage("Do you want delete all ?")
@@ -202,10 +249,12 @@ public class ClassActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void deleteClassAndStudent() {
         classActivityViewModel.deleteAllClass();
     }
-//onClick
+
+    //onClick
     @Override
     public void onClassClick(Classes classes) {
         Log.d(TAG, "onClick item");
@@ -215,7 +264,7 @@ public class ClassActivity extends AppCompatActivity implements
     @Override
     public void onClassLongClick(Classes classes) {
         openDialogUpdateClass(classes);
-         Log.d(TAG, "onLongClick item");
+        Log.d(TAG, "onLongClick item");
     }
 
     public void moveToStudentActivity(Classes classes) {
@@ -230,6 +279,7 @@ public class ClassActivity extends AppCompatActivity implements
         Log.d(TAG, "save Class " + classes.getClassname());
         classActivityViewModel.insertClass(classes);
     }
+
     @Override
     public void updateNameClass(Classes classes) {
         Classes currentClass = classes;
@@ -241,13 +291,34 @@ public class ClassActivity extends AppCompatActivity implements
     private void openDialogUpdateClass(Classes classes) {
         DialogClassUpdate dialogClassUpdate = new DialogClassUpdate();
         dialogClassUpdate.setClass(classes);
-        dialogClassUpdate.show(getSupportFragmentManager(),"update class dialog");
+        dialogClassUpdate.show(getSupportFragmentManager(), "update class dialog");
     }
-//onDestroy
+
+    //onDestroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
+    }
+
+    //snackbar
+    public void showSnackbar() {
+        /*View view;
+        CharSequence charSequence;*/
+        Snackbar snackbar = Snackbar.make(mRecyclerView, "The stem was deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //startActivity(new Intent(ClassActivity.this,LoginActivity.class));
+
+                        //classAdapter.notifyItemInserted();
+                    }
+                })
+
+                .setActionTextColor(Color.RED);
+        snackbar.show();
+
+
     }
 
 

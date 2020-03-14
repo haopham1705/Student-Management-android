@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.thohao.roomdb_2table_rxjava_mvvm.R;
 import com.thohao.roomdb_2table_rxjava_mvvm.adapter.StudentAdapter;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
@@ -103,8 +105,28 @@ public class StudentsActivity extends AppCompatActivity
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
-                                Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+//                                studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
+//                                Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
+                                        .setAction("UNDO", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                studentAdapter.undoDelete();
+                                                studentActivityViewModel.update(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
+                                                Toast.makeText(StudentsActivity.this, "Undo successfull", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addCallback(new Snackbar.Callback(){
+                                            @Override
+                                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                                    studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
+                                                    Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        })
+                                        .setActionTextColor(Color.GREEN);
+                                snackbar.show();
                             }
                         })
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
