@@ -37,7 +37,9 @@ public class ClassActivityViewModel extends AndroidViewModel {
     }
 
     //delete
-    public void deleteClass(Classes classes) { classRepository.deleteClass(classes); }
+    public void deleteClass(Classes classes) {
+        classRepository.deleteClass(classes);
+    }
 
     //delete all class
     public void deleteAllClass() {

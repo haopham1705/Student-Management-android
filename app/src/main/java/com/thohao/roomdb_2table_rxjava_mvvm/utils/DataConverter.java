@@ -7,11 +7,12 @@ import java.io.ByteArrayOutputStream;
 
 public class DataConverter {
     public static byte[] convertImageToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         return stream.toByteArray();
     }
-    public static Bitmap convertByteArrayToImage(byte[]array) {
+
+    public static Bitmap convertByteArrayToImage(byte[] array) {
         return BitmapFactory.decodeByteArray(array, 0, array.length);
     }
 }

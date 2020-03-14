@@ -17,12 +17,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mButton_logn=findViewById(R.id.btn_login);
+        mButton_logn = findViewById(R.id.btn_login);
         mButton_logn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, ClassActivity.class));
-                Toast.makeText(LoginActivity.this,"Login successfull",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

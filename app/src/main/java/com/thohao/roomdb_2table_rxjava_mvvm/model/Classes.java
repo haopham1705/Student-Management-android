@@ -11,7 +11,8 @@ public class Classes {
     private String classname;
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] image;
-//getter
+
+    //getter
     public int getId() {
         return id;
     }
@@ -23,7 +24,8 @@ public class Classes {
     public byte[] getImage() {
         return image;
     }
-//setter
+
+    //setter
     public void setClassname(String classname) {
         this.classname = classname;
     }

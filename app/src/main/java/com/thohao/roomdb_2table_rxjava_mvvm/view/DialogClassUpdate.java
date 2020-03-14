@@ -35,7 +35,7 @@ import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
-public class DialogClassUpdate extends AppCompatDialogFragment{
+public class DialogClassUpdate extends AppCompatDialogFragment {
 
 
     private EditText mTxtClassName;
@@ -46,7 +46,8 @@ public class DialogClassUpdate extends AppCompatDialogFragment{
     private DialogClassUpdate.UpdateClassListener updateClassListener;
     private Classes classes;
     private static final String TAG = "ccc_dialogclassadd";
-//set classes
+
+    //set classes
     public void setClass(Classes classes) {
         this.classes = classes;
     }
@@ -97,8 +98,8 @@ public class DialogClassUpdate extends AppCompatDialogFragment{
 
                     Log.d(TAG, "updated item class");
                     dismiss();
-                    Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
-                }else {
+                    Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
+                } else {
                     Log.d(TAG, "Return update item");
                     Toast.makeText(getActivity(), "Please choose your image", Toast.LENGTH_SHORT).show();
                     return;
@@ -131,10 +132,12 @@ public class DialogClassUpdate extends AppCompatDialogFragment{
         super.onAttach(context);
         updateClassListener = (DialogClassUpdate.UpdateClassListener) context;
     }
-//interface
+
+    //interface
     public interface UpdateClassListener {
         void updateNameClass(Classes classes);
     }
+
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);

@@ -36,16 +36,17 @@ public class ClassRepository {
         studentDao = classDatabase.studentDao();
     }
 
-//get all class
+    //get all class
     public Flowable<List<Classes>> getAllClasses() {
         return classDao.getAllClass();
     }
-//get all student by class
+
+    //get all student by class
     public Flowable<List<Students>> getAllStudents(int class_id) {
         return studentDao.getAllStudentsByClass(class_id);
     }
 
-//Insert class
+    //Insert class
     public void insertClass(final Classes classes) {
         Completable.fromAction(new Action() {
             @Override
@@ -73,7 +74,7 @@ public class ClassRepository {
                 });
     }
 
-//Update class
+    //Update class
     public void updateClass(final Classes classes) {
 
         Completable.fromAction(new Action() {
@@ -102,7 +103,7 @@ public class ClassRepository {
                 });
     }
 
-//Delete class
+    //Delete class
     public void deleteClass(final Classes classes) {
         Completable.fromAction(new Action() {
             @Override
@@ -131,7 +132,7 @@ public class ClassRepository {
                 });
     }
 
-//DeleteAll Class
+    //DeleteAll Class
     public void deleteAllClass() {
         Completable.fromAction(new Action() {
             @Override
@@ -161,7 +162,7 @@ public class ClassRepository {
                 });
     }
 
-//Insert student
+    //Insert student
     public void insertStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override
@@ -189,7 +190,7 @@ public class ClassRepository {
                 });
     }
 
-//Update student
+    //Update student
     public void updateStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override
@@ -217,7 +218,8 @@ public class ClassRepository {
                     }
                 });
     }
-//delete student
+
+    //delete student
     public void deleteStudent(final Students students) {
         Completable.fromAction(new Action() {
             @Override
@@ -245,7 +247,7 @@ public class ClassRepository {
                 });
     }
 
-//delete All Student
+    //delete All Student
     public void deleteAllStudents() {
         Completable.fromAction(new Action() {
             @Override
@@ -276,7 +278,7 @@ public class ClassRepository {
                 });
     }
 
-//delete all student by class
+    //delete all student by class
     public void deleteAllStudentsByClass(final int class_id) {
         Completable.fromAction(new Action() {
             @Override

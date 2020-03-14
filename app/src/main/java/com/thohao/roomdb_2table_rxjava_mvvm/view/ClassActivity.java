@@ -108,7 +108,7 @@ public class ClassActivity extends AppCompatActivity implements
                                 //showSnackbar();
                                 //int position = viewHolder.getAdapterPosition();
 //snackbar undo delete...
-                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
+                                Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
                                         .setAction("UNDO", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -117,15 +117,15 @@ public class ClassActivity extends AppCompatActivity implements
                                                 Toast.makeText(ClassActivity.this, "Undo successfull", Toast.LENGTH_SHORT).show();
                                             }
                                         })
-                                         .addCallback(new Snackbar.Callback(){
-                                             @Override
-                                             public void onDismissed(Snackbar transientBottomBar, int event) {
-                                                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                                                     classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
-                                                     Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                                                 }
-                                             }
-                                         })
+                                        .addCallback(new Snackbar.Callback() {
+                                            @Override
+                                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                                    classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
+                                                    Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        })
                                         .setActionTextColor(Color.GREEN);
                                 snackbar.show();
 
@@ -165,7 +165,7 @@ public class ClassActivity extends AppCompatActivity implements
 
     }
 
-//open insert class dialog
+    //open insert class dialog
     public void openDialogClassAdd() {
         DialogClassAdd dialogClassAdd = new DialogClassAdd();
         dialogClassAdd.show(getSupportFragmentManager(), "create dialog");
@@ -179,7 +179,7 @@ public class ClassActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(classAdapter);
     }
 
-//toolBar
+    //toolBar
     private void intToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -16,7 +16,7 @@ import com.thohao.roomdb_2table_rxjava_mvvm.adapter.StudentAdapter;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Classes;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 
-public class SearchActivity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

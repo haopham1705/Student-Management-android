@@ -85,7 +85,7 @@ public class DialogClassAdd extends AppCompatDialogFragment {
                     mListener.saveNameClass(classes);
                     Log.d(TAG, "Saved item class");
                     Log.d(TAG, "Saved");
-                    Toast.makeText(getActivity(),"Saved",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
             }

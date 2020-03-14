@@ -76,6 +76,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
     public void onItemDissmiss(int position) {
 
     }
+
     public void undoDelete() {
         classesList.add(mClassPosition, classesListfull.get(classesListfull.size() - 1));
         classesListfull.remove(classesListfull.size() - 1);
@@ -83,14 +84,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
     }
 
 
-//getFilter
+    //getFilter
     @Override
     public Filter getFilter() {
         return classFilter;
     }
 
 
-//viewHolder
+    //viewHolder
     public class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private ImageView mImageView;
@@ -110,7 +111,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             mCardView.setOnLongClickListener(this);
         }
 
-//onClick
+        //onClick
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
@@ -118,7 +119,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             onClassClickListener.onClassClick(currentClass);
         }
 
-//long click
+        //long click
         @Override
         public boolean onLongClick(View v) {
             int position = getAdapterPosition();
@@ -127,16 +128,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             return true;
         }
 
-            public void restoreItem() {
-            int position=getAdapterPosition();
-                Classes item = classesList.get(position);
-                classesList.add(position, item);
-                notifyItemInserted(position);
+        public void restoreItem() {
+            int position = getAdapterPosition();
+            Classes item = classesList.get(position);
+            classesList.add(position, item);
+            notifyItemInserted(position);
 
         }
     }
 
-//interface
+    //interface
     public interface OnClassClickListener {
         void onClassClick(Classes classes);
 
@@ -144,7 +145,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
     }
 
 
-//Fiter-Searching
+    //Fiter-Searching
     private Filter classFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -168,7 +169,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
             return results;
         }
 
-//publish results searching
+        //publish results searching
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             classesList.clear();
@@ -177,7 +178,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.AdapterViewH
 
         }
     };
-
 
 
 }

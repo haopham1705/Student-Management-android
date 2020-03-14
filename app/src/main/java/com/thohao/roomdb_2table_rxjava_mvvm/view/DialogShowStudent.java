@@ -60,12 +60,13 @@ public class DialogShowStudent extends AppCompatDialogFragment {
 //        String name =students.getName();
 //        String age =students.getAge();
 //        String address =students.getAddress();
-        mName.setText("Name: "+students.getName());
-        mAge.setText("Age: "+students.getAge());
-        mAddress.setText("Address: "+students.getAddress());
+        mName.setText("Name: " + students.getName());
+        mAge.setText("Age: " + students.getAge());
+        mAddress.setText("Address: " + students.getAddress());
         mImageview.setImageBitmap(DataConverter.convertByteArrayToImage(students.getImage()));
         return builder.create();
     }
+
     public interface OnShowStudentLayer {
         void showStudents(Students students);
     }

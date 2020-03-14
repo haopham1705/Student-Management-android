@@ -84,7 +84,7 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
                     Students students = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
                     onCreateStudentListener.saveNewStudent(students);
                     Log.d(TAG, "Saved");
-                    Toast.makeText(getActivity(),"Saved",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
             }
@@ -92,7 +92,8 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
 
         return builder.create();
     }
-//activity result
+
+    //activity result
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -110,6 +111,7 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
             }
         }
     }
+
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
@@ -123,12 +125,14 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         }
         return result;
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onCreateStudentListener = (OnCreateStudentListener) context;
     }
-//interface
+
+    //interface
     public interface OnCreateStudentListener {
         void saveNewStudent(Students students);
 

@@ -41,7 +41,7 @@ public class StudentsActivity extends AppCompatActivity
         implements DialogStudentAdd.OnCreateStudentListener,
         DialogStudentUpdate.OnUpdateStudentLayer,
         StudentAdapter.OnStudentClickListener,
-            DialogShowStudent.OnShowStudentLayer{
+        DialogShowStudent.OnShowStudentLayer {
 
     private TextView mTxtTitleToolbar;
     private RecyclerView mRecyclerView;
@@ -73,8 +73,8 @@ public class StudentsActivity extends AppCompatActivity
         if (extras != null) {
             mClass = extras.getString("classname");
             class_id = extras.getInt("id");
-            Log.d(TAG, "getExtras: "+class_id + ".." + mClass);
-            mTxtTitleToolbar.setText("Class: "+mClass);
+            Log.d(TAG, "getExtras: " + class_id + ".." + mClass);
+            mTxtTitleToolbar.setText("Class: " + mClass);
         }
 
         Disposable disposable = studentActivityViewModel.getAllStudent(class_id)
@@ -91,7 +91,7 @@ public class StudentsActivity extends AppCompatActivity
 
 //swipe to Delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                0,  ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
+                0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
         ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -116,7 +116,7 @@ public class StudentsActivity extends AppCompatActivity
                                                 Toast.makeText(StudentsActivity.this, "Undo successfull", Toast.LENGTH_SHORT).show();
                                             }
                                         })
-                                        .addCallback(new Snackbar.Callback(){
+                                        .addCallback(new Snackbar.Callback() {
                                             @Override
                                             public void onDismissed(Snackbar transientBottomBar, int event) {
                                                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
@@ -160,19 +160,21 @@ public class StudentsActivity extends AppCompatActivity
         });
         intToolbar();
     }
-//insert dialog
+
+    //insert dialog
     private void openAddStudentDialog() {
         DialogStudentAdd dialogStudentAdd = new DialogStudentAdd();
         dialogStudentAdd.show(getSupportFragmentManager(), "Create Student Dialog");
     }
 
-//setAdapter
+    //setAdapter
     private void setDataToRecyclerView(List<Students> studentsList) {
         studentAdapter = new StudentAdapter(studentsList);
         studentAdapter.setItemClickListener(this);
         mRecyclerView.setAdapter(studentAdapter);
     }
-//toolBar
+
+    //toolBar
     private void intToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -211,7 +213,8 @@ public class StudentsActivity extends AppCompatActivity
 
         return true;
     }
-//Action Menu
+
+    //Action Menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -243,31 +246,36 @@ public class StudentsActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
-//delete all student
+
+    //delete all student
     private void deleteAllStudent() {
         studentActivityViewModel.deleteAllStudentByClass(class_id);
 
     }
-//Destroy
+
+    //Destroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
     }
+
     @Override
     public void saveNewStudent(Students students) {
         Students currentStudent = students;
         currentStudent.setClass_id(class_id);
         studentActivityViewModel.insert(currentStudent);
     }
-//update
+
+    //update
     @Override
     public void updateNewStudents(Students students) {
         Students currentStudent = students;
         currentStudent.setClass_id(class_id);
         studentActivityViewModel.update(currentStudent);
     }
-//show
+
+    //show
     @Override
     public void showStudents(Students students) {
         Students currentStudent = students;
@@ -275,12 +283,14 @@ public class StudentsActivity extends AppCompatActivity
         studentActivityViewModel.update(currentStudent);
 
     }
-//onStudentClick
+
+    //onStudentClick
     @Override
     public void onStudentClick(Students students) {
         openDialogShowStudent(students);
     }
-//onStudent LongClick
+
+    //onStudent LongClick
     @Override
     public void onStudentLongClick(Students students) {
         Log.d(TAG, "onStudentClick" + students.getId());
@@ -288,7 +298,7 @@ public class StudentsActivity extends AppCompatActivity
         openDialogUpdateStudent(students);
     }
 
-//dialog update
+    //dialog update
     private void openDialogUpdateStudent(Students students) {
         DialogStudentUpdate dialogStudentUpdate = new DialogStudentUpdate();
         dialogStudentUpdate.setStudents(students);
@@ -298,7 +308,7 @@ public class StudentsActivity extends AppCompatActivity
     private void openDialogShowStudent(Students students) {
         DialogShowStudent dialogShowStudent = new DialogShowStudent();
         dialogShowStudent.setStudents(students);
-        dialogShowStudent.show(getSupportFragmentManager(),"Show student dialog");
+        dialogShowStudent.show(getSupportFragmentManager(), "Show student dialog");
     }
 
 

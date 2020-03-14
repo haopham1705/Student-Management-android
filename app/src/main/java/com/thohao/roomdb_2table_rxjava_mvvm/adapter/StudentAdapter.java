@@ -32,6 +32,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         this.studentsList = studentsList;
         studentsListfull = new ArrayList<>(studentsList);
     }
+
     //undo
     void setStudents(List<Students> students) {
         this.studentsList = students;
@@ -71,14 +72,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return studentsList.size();
     }
 
-//undo delete
+    //undo delete
     public void undoDelete() {
         studentsList.add(mStudentPosition, studentsListfull.get(studentsListfull.size() - 1));
         studentsListfull.remove(studentsListfull.size() - 1);
         notifyItemInserted(mStudentPosition);
     }
 
-//getFilter
+    //getFilter
     @Override
     public Filter getFilter() {
         return studentFilter;
@@ -132,7 +133,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         void onStudentLongClick(Students students);
     }
 
-//Filter / searching
+    //Filter / searching
     private Filter studentFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

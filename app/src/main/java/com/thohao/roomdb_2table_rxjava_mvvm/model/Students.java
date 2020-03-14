@@ -22,7 +22,7 @@ public class Students {
         this.image = image;
     }
 
-//setter
+    //setter
     public void setId(int id) {
         this.id = id;
     }
@@ -47,7 +47,7 @@ public class Students {
         this.image = image;
     }
 
-//getter
+    //getter
     public int getId() {
         return id;
     }

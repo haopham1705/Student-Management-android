@@ -24,11 +24,12 @@ public interface StudentDao {
 
     @Delete
     void delete(Students students);
-    
-//delete all students
+
+    //delete all students
     @Query("DELETE FROM student_table")
     void deleteAllStudents();
-//delete students by class
+
+    //delete students by class
     @Query("DELETE FROM student_table WHERE class_id==:class_id")
     void deleteAllStudentsUnderClass(int class_id);
 
