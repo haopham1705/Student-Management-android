@@ -1,23 +1,29 @@
 package com.thohao.roomdb_2table_rxjava_mvvm.view;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.google.android.material.card.MaterialCardView;
@@ -28,6 +34,9 @@ import com.thohao.roomdb_2table_rxjava_mvvm.utils.DataConverter;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import id.zelory.compressor.Compressor;
 
@@ -44,6 +53,22 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
     private Bitmap mBitmap;
     private OnCreateStudentListener onCreateStudentListener;
     private static final String TAG = "ccc_dialogstudentadd";
+    //date picker
+    final Calendar myCalendar = Calendar.getInstance();
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+    private void updateLabel() {
+        String myFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        mTxtAge.setText(sdf.format(myCalendar.getTime()));
+    }
 
     @NonNull
     @Override
@@ -62,6 +87,31 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         mImageSelectBtn = view.findViewById(R.id.select_image);
         mSaveButton = view.findViewById(R.id.btn_save);
         mImageview = view.findViewById(R.id.image_view);
+
+        //date picker
+        mTxtAge.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    new DatePickerDialog(getActivity(), date,
+                            myCalendar.get(Calendar.YEAR),
+                            myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+                return true;
+            }
+        });
+        /*mTxtAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getActivity(), date,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });*/
+
 
         mImageSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,9 +182,22 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         onCreateStudentListener = (OnCreateStudentListener) context;
     }
 
+   /* @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, month);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String selectedDate = new SimpleDateFormat("MM/dd/yyyy",
+                Locale.UK).format(myCalendar.getTime());
+        mTxtAge.setText(selectedDate);
+
+    }*/
+
     //interface
     public interface OnCreateStudentListener {
         void saveNewStudent(Students students);
 
     }
+
+
 }

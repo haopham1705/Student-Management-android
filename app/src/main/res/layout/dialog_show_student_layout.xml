@@ -57,7 +57,6 @@
 
         <TextView
             android:padding="2dp"
-            android:background="@drawable/rounded_corner"
             android:id="@+id/txt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +68,6 @@
 
         <TextView
             android:padding="2dp"
-            android:background="@drawable/rounded_corner"
             android:id="@+id/txt_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +79,6 @@
 
         <TextView
             android:padding="2dp"
-            android:background="@drawable/rounded_corner"
             android:id="@+id/txt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +87,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="25sp"
             android:textStyle="bold" />
-
+<!--android:background="@drawable/rounded_corner"-->
     </LinearLayout>
     </LinearLayout>
 </ScrollView>
