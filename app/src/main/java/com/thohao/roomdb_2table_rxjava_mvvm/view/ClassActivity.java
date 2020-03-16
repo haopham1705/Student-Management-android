@@ -105,9 +105,8 @@ public class ClassActivity extends AppCompatActivity implements
                             public void onClick(DialogInterface dialog, int which) {
                                 /*classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
                                 Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();*/
-                                //showSnackbar();
-                                //int position = viewHolder.getAdapterPosition();
-//snackbar undo delete...
+
+//snackbar undo
                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
                                         .setAction("UNDO", new View.OnClickListener() {
                                             @Override
@@ -128,17 +127,6 @@ public class ClassActivity extends AppCompatActivity implements
                                         })
                                         .setActionTextColor(Color.GREEN);
                                 snackbar.show();
-
-                                //Handler
-                                /*new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
-                                        Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-
-
-                                    }
-                                },5000);*/
 
                             }
                         })
@@ -184,7 +172,6 @@ public class ClassActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         //getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setTitle("LiveF Manager");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -300,26 +287,4 @@ public class ClassActivity extends AppCompatActivity implements
         super.onDestroy();
         compositeDisposable.dispose();
     }
-
-    //snackbar
-    public void showSnackbar() {
-        /*View view;
-        CharSequence charSequence;*/
-        Snackbar snackbar = Snackbar.make(mRecyclerView, "The stem was deleted", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //startActivity(new Intent(ClassActivity.this,LoginActivity.class));
-
-                        //classAdapter.notifyItemInserted();
-                    }
-                })
-
-                .setActionTextColor(Color.RED);
-        snackbar.show();
-
-
-    }
-
-
 }

@@ -107,6 +107,7 @@ public class StudentsActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
 //                                studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
 //                                Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+
                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
                                         .setAction("UNDO", new View.OnClickListener() {
                                             @Override
@@ -174,7 +175,7 @@ public class StudentsActivity extends AppCompatActivity
         mRecyclerView.setAdapter(studentAdapter);
     }
 
-    //toolBar
+//toolBar
     private void intToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -214,7 +215,7 @@ public class StudentsActivity extends AppCompatActivity
         return true;
     }
 
-    //Action Menu
+//Action Menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -253,7 +254,7 @@ public class StudentsActivity extends AppCompatActivity
 
     }
 
-    //Destroy
+//Destroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -284,7 +285,7 @@ public class StudentsActivity extends AppCompatActivity
 
     }
 
-    //onStudentClick
+//onStudentClick
     @Override
     public void onStudentClick(Students students) {
         openDialogShowStudent(students);

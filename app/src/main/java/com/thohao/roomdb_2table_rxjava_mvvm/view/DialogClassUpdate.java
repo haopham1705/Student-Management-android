@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +29,7 @@ import com.thohao.roomdb_2table_rxjava_mvvm.model.Classes;
 import com.thohao.roomdb_2table_rxjava_mvvm.utils.DataConverter;
 import com.vanniktech.rxpermission.RealRxPermission;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -91,8 +93,14 @@ public class DialogClassUpdate extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 String class_name = mTxtClassName.getText().toString();
-                if (!class_name.isEmpty() && mBitmap != null) {
-                    Classes classesCurrent = new Classes(class_name, DataConverter.convertImageToByteArray(mBitmap));
+                //convert image to byte array
+                mBitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageInByte = baos.toByteArray();
+                /*DataConverter.convertImageToByteArray(mBitmap)*/
+                if (!class_name.isEmpty() && imageInByte != null) {
+                    Classes classesCurrent = new Classes(class_name,imageInByte );
                     classesCurrent.setId(classes.getId());
                     updateClassListener.updateNameClass(classesCurrent);
 
@@ -101,7 +109,7 @@ public class DialogClassUpdate extends AppCompatDialogFragment {
                     Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "Return update item");
-                    Toast.makeText(getActivity(), "Please choose your image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter your information", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

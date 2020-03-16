@@ -30,6 +30,7 @@ import com.thohao.roomdb_2table_rxjava_mvvm.R;
 import com.thohao.roomdb_2table_rxjava_mvvm.model.Students;
 import com.thohao.roomdb_2table_rxjava_mvvm.utils.DataConverter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -118,20 +119,21 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                 startActivityForResult(pickPhoto, 1);
             }
         });
-
+//save
         mButtonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = mName.getText().toString();
                 String age = mAge.getText().toString();
                 String address = mAddress.getText().toString();
-                //Bitmap bitmap = mBitmap.(DataConverter.convertImageToByteArray(students.getImage()));
-                /*mImageview.invalidate();
-                BitmapDrawable drawable = (BitmapDrawable) mImageview.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();*/
-                //Bitmap imgBitmap= mImageview.getDrawable(DataConverter.convertImageToByteArray(mBitmap));
-                if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && mBitmap != null) {
-                    Students currentStudents = new Students(name, age, address, DataConverter.convertImageToByteArray(mBitmap));
+                //convert image to byte array
+                mBitmap = ((BitmapDrawable) mImageview.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageInByte = baos.toByteArray();
+
+                if (!name.isEmpty() && !age.isEmpty() && !address.isEmpty() && imageInByte != null) {
+                    Students currentStudents = new Students(name, age, address, imageInByte);
                     currentStudents.setId(students.getId());
                     onUpdateStudentLayer.updateNewStudents(currentStudents);
                     dismiss();
@@ -141,7 +143,7 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                     Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "Return update item");
-                    Toast.makeText(getActivity(), "Please choose your image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter your information", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
