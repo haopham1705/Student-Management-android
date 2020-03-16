@@ -58,8 +58,6 @@ public class StudentsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students);
-        //setItemOnlick
-        //studentAdapter = new StudentAdapter(list);
         mTxtTitleToolbar = findViewById(R.id.toolbar_title);
 //set recycler view
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -88,7 +86,6 @@ public class StudentsActivity extends AppCompatActivity
                     }
                 });
         compositeDisposable.add(disposable);
-
 //swipe to Delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
@@ -97,7 +94,6 @@ public class StudentsActivity extends AppCompatActivity
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 new MaterialAlertDialogBuilder(StudentsActivity.this, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
@@ -105,9 +101,6 @@ public class StudentsActivity extends AppCompatActivity
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-//                                studentActivityViewModel.delete(studentAdapter.getStudentAt(viewHolder.getAdapterPosition()));
-//                                Toast.makeText(StudentsActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-
                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
                                         .setAction("UNDO", new View.OnClickListener() {
                                             @Override
@@ -282,7 +275,6 @@ public class StudentsActivity extends AppCompatActivity
         Students currentStudent = students;
         currentStudent.setClass_id(class_id);
         studentActivityViewModel.update(currentStudent);
-
     }
 
 //onStudentClick

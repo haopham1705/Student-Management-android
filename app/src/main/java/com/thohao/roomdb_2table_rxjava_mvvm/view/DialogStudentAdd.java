@@ -101,16 +101,6 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
                 return true;
             }
         });
-        /*mTxtAge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getActivity(), date,
-                        myCalendar.get(Calendar.YEAR),
-                        myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
-            }
-        });*/
 
 
         mImageSelectBtn.setOnClickListener(new View.OnClickListener() {
@@ -181,17 +171,6 @@ public class DialogStudentAdd extends AppCompatDialogFragment {
         super.onAttach(context);
         onCreateStudentListener = (OnCreateStudentListener) context;
     }
-
-   /* @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        myCalendar.set(Calendar.YEAR, year);
-        myCalendar.set(Calendar.MONTH, month);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = new SimpleDateFormat("MM/dd/yyyy",
-                Locale.UK).format(myCalendar.getTime());
-        mTxtAge.setText(selectedDate);
-
-    }*/
 
     //interface
     public interface OnCreateStudentListener {

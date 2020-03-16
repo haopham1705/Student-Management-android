@@ -98,6 +98,7 @@ public class DialogClassUpdate extends AppCompatDialogFragment {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageInByte = baos.toByteArray();
+
                 /*DataConverter.convertImageToByteArray(mBitmap)*/
                 if (!class_name.isEmpty() && imageInByte != null) {
                     Classes classesCurrent = new Classes(class_name,imageInByte );

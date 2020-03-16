@@ -103,9 +103,6 @@ public class ClassActivity extends AppCompatActivity implements
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /*classActivityViewModel.deleteClass(classAdapter.getClassAt(viewHolder.getAdapterPosition()));
-                                Toast.makeText(ClassActivity.this, "Deleted", Toast.LENGTH_SHORT).show();*/
-
 //snackbar undo
                                 Snackbar snackbar = Snackbar.make(mRecyclerView, "The item was deleted", Snackbar.LENGTH_LONG)
                                         .setAction("UNDO", new View.OnClickListener() {
@@ -157,7 +154,6 @@ public class ClassActivity extends AppCompatActivity implements
     public void openDialogClassAdd() {
         DialogClassAdd dialogClassAdd = new DialogClassAdd();
         dialogClassAdd.show(getSupportFragmentManager(), "create dialog");
-
     }
 
     //setAdapter
@@ -180,7 +176,6 @@ public class ClassActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
 //Searching
@@ -198,7 +193,6 @@ public class ClassActivity extends AppCompatActivity implements
                 return false;
             }
         });
-
         return true;
     }
 

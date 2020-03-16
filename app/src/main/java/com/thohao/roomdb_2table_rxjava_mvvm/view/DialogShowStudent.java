@@ -57,9 +57,6 @@ public class DialogShowStudent extends AppCompatDialogFragment {
         mAddress = view.findViewById(R.id.txt_address);
         mImageview = view.findViewById(R.id.image_view);
 
-//        String name =students.getName();
-//        String age =students.getAge();
-//        String address =students.getAddress();
         mName.setText("Name: " + students.getName());
         mAge.setText("Age: " + students.getAge());
         mAddress.setText("Address: " + students.getAddress());

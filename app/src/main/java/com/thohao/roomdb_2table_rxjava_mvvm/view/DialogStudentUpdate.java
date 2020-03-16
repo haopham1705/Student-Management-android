@@ -138,7 +138,6 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
                     onUpdateStudentLayer.updateNewStudents(currentStudents);
                     dismiss();
                     Log.d(TAG, "Updated");
-
                     //getActivity() hien toast trong Dialog
                     Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 } else {
@@ -150,7 +149,6 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
         });
         return builder.create();
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -168,7 +166,6 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
             }
         }
     }
-
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
@@ -188,7 +185,6 @@ public class DialogStudentUpdate extends AppCompatDialogFragment {
         super.onAttach(context);
         onUpdateStudentLayer = (OnUpdateStudentLayer) context;
     }
-
     public interface OnUpdateStudentLayer {
         void updateNewStudents(Students students);
     }
